@@ -6,7 +6,7 @@
 
 # Express Rescue
 
-It's wrapper for async functions which makes sure all async errors are passed to your handler preventing those anoing `UnhandledPromiseRejectionWarning` when using async/await, especially with expressjs routes/middlewares. And nope, this is not an anti-pattern.
+It's a wrapper for async functions which makes sure all async errors are passed to your error handler preventing those anoing `UnhandledPromiseRejectionWarning` when using async/await, especially with expressjs routes/middlewares. And nope, this is not an anti-pattern.
 
 
 ## Usin with expressjs
