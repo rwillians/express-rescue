@@ -12,8 +12,7 @@ script:
     - yarn lint
     - yarn test
 after_script:
-    - yarn add --no-lockfile coveralls
-    - yarn coverage | coveralls
+    - yarn add --no-lockfile coveralls && yarn coverage | coveralls
 
 deploy:
     provider: npm
