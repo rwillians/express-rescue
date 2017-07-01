@@ -7,6 +7,7 @@
     "coverage": "nyc --reporter=html --reporter=text --reporter=text-lcov --show-process-tree --include index.js yarn test && nyc check-coverage --statements 100 --lines 100 --functions 100 --branches 100 yarn test",
     "coverage:report": "nyc report --reporter=text-lcov",
     "lint": "standard index.js && standard specs/**.spec.js --global describe --global context --global it --global specify --global before --global after --global beforeEach --global afterEach --global expect",
+    "lint:fix": "standard index.js --fix && standard specs/**.spec.js --fix --global describe --global context --global it --global specify --global before --global after --global beforeEach --global afterEach --global expect",
     "test": "mocha specs --require ./specs/spec-helper.js"
   },
   "repository": {
@@ -31,8 +32,7 @@
     "chai": "^4.0.2",
     "mocha": "^3.4.2",
     "nyc": "^11.0.3",
-    "sinon": "^2.3.6",
-    "sinon-chai": "^2.11.0"
+    "sinon": "^2.3.6"
   },
   "dependencies": {
     "standard": "^10.0.2"

@@ -1,3 +1,6 @@
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![Build Status](https://travis-ci.org/rwillians/express-rescue.svg?branch=master)](https://travis-ci.org/rwillians/express-rescue)
+
 # Express Rescue
 
 It's wrapper for async functions which makes sure all async errors are passed to your handler preventing those anoing `UnhandledPromiseRejectionWarning` when using async/await, especially with expressjs routes/middlewares. And nope, this is not an anti-pattern.
