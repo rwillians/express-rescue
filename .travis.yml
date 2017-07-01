@@ -13,5 +13,4 @@ cache:
 script:
     - yarn lint
     - yarn test
-    - yarn coverage
-after_script: yarn add coveralls && yarn coverage:report | coveralls
+after_script: yarn add coveralls && yarn coverage | coveralls
