@@ -1,0 +1,35 @@
+{
+  "name": "express-rescue",
+  "version": "1.0.0",
+  "description": "A wrapper to async route function for expressjs which makes sure all async errors are passed to the next middleware",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha specs --require ./specs/spec-helper.js",
+    "coverage": "nyc --reporter=html --reporter=text --show-process-tree --include index.js yarn test && nyc check-coverage --statements 100 --lines 100 --functions 100 --branches 100 yarn test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rwillians/express-rescue.git"
+  },
+  "keywords": [
+    "async",
+    "await",
+    "error",
+    "expressjs",
+    "rescue",
+    "unhandled"
+  ],
+  "author": "Rafael Willians",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rwillians/express-rescue/issues"
+  },
+  "homepage": "https://github.com/rwillians/express-rescue#readme",
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2",
+    "nyc": "^11.0.3",
+    "sinon": "^2.3.6",
+    "sinon-chai": "^2.11.0"
+  }
+}
