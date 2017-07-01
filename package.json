@@ -1,6 +1,6 @@
 {
   "name": "express-rescue",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A wrapper for async functions which makes sure all async errors are passed to your errors handler",
   "main": "index.js",
   "engines": [

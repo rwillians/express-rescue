@@ -11,8 +11,9 @@ cache:
 script:
     - yarn lint
     - yarn test
-after_script:
-    - yarn add --no-lockfile coveralls && yarn coverage | coveralls
+
+after_success:
+    - yarn global add coveralls && yarn coverage | coveralls
 
 deploy:
     provider: npm
