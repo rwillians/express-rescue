@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A wrapper to async route function for expressjs which makes sure all async errors are passed to the next middleware",
   "main": "index.js",
+  "engines": [
+    "node >= 7.6.0"
+  ],
   "scripts": {
     "coverage": "nyc report --reporter=text-lcov --include index.js yarn test",
     "lint": "standard index.js && standard specs/**.spec.js --global describe --global context --global it --global specify --global before --global after --global beforeEach --global afterEach --global expect",
