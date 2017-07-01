@@ -11,9 +11,10 @@ cache:
 script:
     - yarn lint
     - yarn test
+    - yarn coverage
 
 after_success:
-    - yarn global add coveralls && yarn coverage | coveralls
+    - yarn global add coveralls && yarn coverage:report | coveralls
 
 deploy:
     provider: npm

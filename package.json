@@ -1,13 +1,14 @@
 {
   "name": "express-rescue",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A wrapper for async functions which makes sure all async errors are passed to your errors handler",
   "main": "index.js",
   "engines": [
     "node >= 7.6.0"
   ],
   "scripts": {
-    "coverage": "nyc report --reporter=text-lcov --include index.js yarn test",
+    "coverage": "nyc --reporter=text --include index.js yarn test",
+    "coverage:report": "nyc report --reporter=text-lcov",
     "lint": "standard index.js && standard specs/**.spec.js --global describe --global context --global it --global specify --global before --global after --global beforeEach --global afterEach --global expect",
     "test": "mocha specs --require ./specs/spec-helper.js"
   },
