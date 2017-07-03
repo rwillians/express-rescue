@@ -9,10 +9,8 @@ describe('const callable = rescue(async ([err,] req, res, next) => { })', () => 
     const route = rescue(async (req, res, next) => { throw error })
 
     it('Raises a TypeError if last argument is not a function', () => {
-      route({}, {}, {}, {}, {}, {}).catch((err) => {
-        expect(err).to.be.an.instanceof(TypeError)
-        expect(err.message).to.equals('next is not a function')
-      })
+      expect(route({}, {}, {}, {}, {}, {}))
+        .to.eventually.be.rejectedWith(TypeError, 'handler is not a function')
     })
 
     it('callable(req, res, next) - works for routes and middlewares', () => {

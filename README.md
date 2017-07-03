@@ -22,22 +22,22 @@ app.get('/:id', rescue(async (req, res, next) => {
     const user = await repository.getById(req.params.id)
 
     if (!user) {
-        throw new UserNotFoundError
+      throw new UserNotFoundError
     }
 
     res.status(200)
        .json(user)
 }))
 
-app.use(rescue(async (err, req, res, next) => {
-    if (err instanceof UserNotFoundError) {
-        return res.status(404)
-                  .json({ error: 'these are not the droids you\'re looking for'})
-    }
+app.use((err, req, res, next) => {
+  if (err instanceof UserNotFoundError) {
+    return res.status(404)
+              .json({ error: 'these are not the droids you\'re looking for'})
+  }
 
-    res.status(500)
-       .json({ error: 'i have a bad feeling about this'})
-}))
+  res.status(500)
+     .json({ error: 'i have a bad feeling about this'})
+})
 
 ```
 
@@ -54,8 +54,8 @@ Let's try it out:
 ```js
 const rescue = require('express-rescue')
 
-const somethingWrong = rescue(function (arg1, arg2, arg3, arg4) {
-    throw new Error('Houston, we have a problem!')
+const somethingWrong = rescue(function (arg1, arg2, arg3, arg4, errorHandler) {
+  throw new Error('Houston, we have a problem!')
 })
 
 const arg1 = null
@@ -64,8 +64,8 @@ const arg3 = null
 const arg4 = null
 
 const errorHandler = function (err) {
-    console.log(err.message)
-    process.exit(1)
+  console.log(err.message)
+  process.exit(1)
 }
 
 somethingWrong(arg1, arg2, arg3, arg4, errorHandler) // Houston, we have a problem!
@@ -82,18 +82,19 @@ Chears!
 ## Tests
 
 ```txt
-yarn test v0.24.6
+yarn test v0.27.5
 $ mocha specs --require ./specs/spec-helper.js
 
 
   const callable = rescue(async ([err,] req, res, next) => { })
     calls the last argument (next) with the thrown error
+      ✓ Raises a TypeError if last argument is not a function
       ✓ callable(req, res, next) - works for routes and middlewares
       ✓ callable(err, req, res, next) - works for error handler middlewares
       ✓ callable(foo, bar, baz, foobar, foobaz, errorHandler) - should work for basically anything, since you place an error handler as the last argument
 
 
-  3 passing (12ms)
+  4 passing (17ms)
 
-✨  Done in 0.41s.
+Done in 0.48s.
 ```
