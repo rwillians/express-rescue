@@ -8,6 +8,21 @@ describe('const callable = rescue(async ([err,] req, res, next) => { })', () => 
     const error = new Error()
     const route = rescue(async (req, res, next) => { throw error })
 
+    it('All arguments are been passed to the callback', async () => {
+      const spy1 = sinon.spy()
+      const spy2 = sinon.spy()
+      const spy3 = sinon.spy()
+      const callable = rescue((arg1, arg2, arg3) => {
+        [arg1, arg2, arg3].forEach(a => a())
+      })
+
+      await callable(spy1, spy2, spy3)
+
+      expect(spy1.called).to.equals(true)
+      expect(spy2.called).to.equals(true)
+      expect(spy3.called).to.equals(true)
+    })
+
     it('Raises a TypeError if last argument is not a function', () => {
       expect(route({}, {}, {}, {}, {}, {}))
         .to.eventually.be.rejectedWith(TypeError, 'handler is not a function')
