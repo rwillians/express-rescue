@@ -13,12 +13,12 @@ const rescue = function rescue (callback) {
 }
 
 rescue.from = function rescuefrom (constructor, fn) {
-  return function errorhandler (err, ...args) {
+  return function errorhandler (err, req, res, next) {
     if (!(err instanceof constructor)) {
       return next(err)
     }
 
-    next(fn(err, ...args))
+    fn(err, req, res, next)
   }
 }
 
