@@ -1,7 +1,7 @@
 'use strict'
 
-module.exports = function rescue (callback) {
-  return async (...args) => {
+const rescue = function rescue (callback) {
+  return async function rescuehandler (...args) {
     const handler = args.slice(-1).pop()
 
     try {
@@ -11,3 +11,15 @@ module.exports = function rescue (callback) {
     }
   }
 }
+
+rescue.from = function rescuefrom (constructor, fn) {
+  return function errorhandler (err, ...args) {
+    if (!(err instanceof constructor)) {
+      return next(err)
+    }
+
+    next(fn(err, ...args))
+  }
+}
+
+module.exports = rescue
