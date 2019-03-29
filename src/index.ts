@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
-export function rescue (callback: Function) {
+module.exports = function rescue (callback: Function) {
   return async function rescuehandler (...args: unknown[]) {
     const handler = args.slice(-1).pop() as Function
     try {
@@ -11,7 +11,7 @@ export function rescue (callback: Function) {
   }
 }
 
-rescue.from = function rescuefrom (constructor: { new(...args: any[]): Error }, fn: Function) {
+module.exports.from = function rescuefrom (constructor: { new(...args: any[]): Error }, fn: Function) {
   return function errorhandler (err: Error, req: Request, res: Response, next: NextFunction) {
     if (!(err instanceof constructor)) {
       return next(err)

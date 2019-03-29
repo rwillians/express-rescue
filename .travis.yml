@@ -2,6 +2,9 @@ language: node_js
 node_js:
     - 7
     - 8
+    - 9
+    - 10
+    - 11
 
 cache:
     yarn: true
@@ -9,12 +12,13 @@ cache:
         - node_modules
 
 script:
-    - yarn lint
-    - yarn test
-    - yarn coverage
+    - npm run buid
+    - npm run lint
+    - npm run test
+    - npm run coverage
 
 after_success:
-    - yarn global add coveralls && yarn coverage:report | coveralls
+    - npm global add coveralls && npm run coverage:report | coveralls
 
 deploy:
     provider: npm
@@ -22,4 +26,4 @@ deploy:
     api_key: $NPM_TOKEN
     on:
         tags: true
-        node: 8
+        node: 10
