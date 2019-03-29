@@ -1,7 +1,7 @@
 'use strict'
 
 const sinon = require('sinon')
-const rescue = require('../index')
+const rescue = require('../dist/index')
 
 describe('const callable = rescue(async ([err,] req, res, next) => { })', () => {
   describe('calls the last argument (next) with the thrown error', () => {
