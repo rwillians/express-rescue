@@ -1,6 +1,6 @@
 {
   "name": "express-rescue",
-  "version": "1.1.11",
+  "version": "1.1.14",
   "description": "A wrapper for async functions which makes sure all async errors are passed to your errors handler",
   "license": "MIT",
   "main": "dist/index.js",
@@ -27,6 +27,9 @@
   "engines": {
     "node": ">=7.6.0"
   },
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "coverage": "nyc --reporter=text --include index.js npm test",
     "coverage:report": "nyc report --reporter=text-lcov",
