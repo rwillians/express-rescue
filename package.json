@@ -35,7 +35,8 @@
     "coverage:report": "nyc report --reporter=text-lcov",
     "lint": "standard index.js && standard specs/**.spec.js --global describe --global context --global it --global specify --global before --global after --global beforeEach --global afterEach --global expect",
     "test": "mocha specs --require ./specs/spec-helper.js",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "rm -rf dist && tsc"
   },
   "devDependencies": {
     "@types/express": "^4.16.1",
