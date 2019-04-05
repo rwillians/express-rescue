@@ -11,17 +11,16 @@ cache:
     directories:
         - node_modules
 
-script:
+before_script:
     - npm run build
+
+script:
     - npm run lint
     - npm run test
     - npm run coverage
 
 after_success:
     - npm global add coveralls && npm run coverage:report | coveralls
-
-before_deploy:
-    - npm run build
 
 deploy:
     provider: npm
