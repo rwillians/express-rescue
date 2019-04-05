@@ -22,6 +22,9 @@ script:
 after_success:
     - npm global add coveralls && npm run coverage:report | coveralls
 
+before_deploy:
+    - npm run build
+
 deploy:
     provider: npm
     email: $NPM_EMAIL_ADDRESS
