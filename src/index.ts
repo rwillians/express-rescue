@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
-export function rescue (callback: Function) {
+export default function rescue (callback: Function) {
   return async function rescuehandler (...args: unknown[]) {
     const handler = args.slice(-1).pop() as Function
     try {
