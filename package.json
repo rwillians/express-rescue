@@ -37,9 +37,6 @@
     "test": "mocha specs --require ./specs/spec-helper.js",
     "build": "tsc"
   },
-  "peerDependencies": {
-    "@types/express": "^4.16.1"
-  },
   "devDependencies": {
     "@types/node": "^11.13.2",
     "chai": "^4.0.2",
@@ -48,6 +45,7 @@
     "nyc": "^11.0.3",
     "sinon": "^2.3.6",
     "standard": "^10.0.2",
-    "typescript": "^3.3.4000"
+    "typescript": "^3.3.4000",
+    "@types/express": "^4.16.1"
   }
 }
