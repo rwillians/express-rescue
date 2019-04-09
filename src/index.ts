@@ -11,7 +11,7 @@ export default function rescue (callback: Function) {
   }
 }
 
-rescue.from = function rescuefrom (constructor: { new(...args: any[]): Error }, fn: Function) {
+export function rescueFrom (constructor: { new(...args: any[]): Error }, fn: Function) {
   return function errorhandler (err: Error, req: Request, res: Response, next: NextFunction) {
     if (!(err instanceof constructor)) {
       return next(err)
@@ -20,5 +20,3 @@ rescue.from = function rescuefrom (constructor: { new(...args: any[]): Error }, 
     fn(err, req, res, next)
   }
 }
-
-module.exports = rescue
