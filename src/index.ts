@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
-export default function rescue (callback: Function) {
+const rescue = function rescue (callback: Function) {
   return async function rescuehandler (...args: unknown[]) {
     const handler = args.slice(-1).pop() as Function
     try {
@@ -21,4 +21,4 @@ rescue.from = function rescuefrom (constructor: { new(...args: any[]): Error }, 
   }
 }
 
-module.exports = rescue
+export default rescue
