@@ -22,3 +22,4 @@ rescue.from = function rescuefrom (constructor: { new(...args: any[]): Error }, 
 }
 
 export default rescue
+module.exports = rescue
