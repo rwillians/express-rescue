@@ -1,23 +1,32 @@
 import { Request, Response, NextFunction } from 'express'
 
-const rescue = function rescue (callback: Function) {
-  return async function rescuehandler (...args: unknown[]) {
-    const handler = args.slice(-1).pop() as Function
+export { Request, Response, NextFunction }
+export declare type Callback = (...args: any[]) => Promise<void> | void
+export declare type ErrorConstructor = { new(...args: any[]): Error }
+export declare interface Rescue {
+  (callback: Callback): Callback
+  from (constructor: ErrorConstructor, callback: Callback): Callback
+}
+
+const rescue: Rescue = function rescue (callback) {
+  return async function rescuehandler (...args: any[]): Promise<void> {
+    const next = args.slice(-1).pop() as NextFunction
+
     try {
-      return await callback(...args) // eslint-disable-line
+      await callback(...args) // eslint-disable-line
     } catch (err) {
-      return handler(err)
+      next(err)
     }
   }
 }
 
-rescue.from = function rescuefrom (constructor: { new(...args: any[]): Error }, fn: Function) {
+rescue.from = function rescuefrom (constructor, callback) {
   return function errorhandler (err: Error, req: Request, res: Response, next: NextFunction) {
     if (!(err instanceof constructor)) {
-      return next(err)
+      next(err)
     }
 
-    fn(err, req, res, next)
+    callback(err, req, res, next)
   }
 }
 
