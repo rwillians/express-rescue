@@ -6,18 +6,19 @@
 
 # Express Rescue
 
-It's a wrapper for async functions which makes sure all async errors are passed to your error handler preventing those anoing `UnhandledPromiseRejectionWarning` when using async/await, especially with expressjs routes/middlewares. And nope, this is not an anti-pattern.
+This is a dependecy free wrapper (or sugar code layer if you will) for async middlewares which makes sure all async errors are passed to your stack of error handlers, allowing you to have a **cleaner and more readable code**.
 
 
-## Usin with expressjs
+## How to use it
 
-It's so simple... how about I just show you how it's done?
+It's really simple:
 
 ```js
 const rescue = require('express-rescue')
 
-// ...
-
+/**
+ * `rescue` insures thrown errors are passed to `next` callback.
+ */
 app.get('/:id', rescue(async (req, res, next) => {
     const user = await repository.getById(req.params.id)
 
@@ -29,49 +30,27 @@ app.get('/:id', rescue(async (req, res, next) => {
        .json(user)
 }))
 
+/**
+ * `rescue.from` allows you to handle a specific error which is helpful for
+ * handling domain errors.
+ */
+app.use(rescue.from(UserNotFoundError, (err, req, res, next) => {
+    res.status(404)
+       .json({ error: 'these are not the droids you\'re looking for'})
+})
+
+/**
+ * Your error handlers still works as expected. If an error doesn't match your
+ * `rescue.from` criteria, it will find its way to the next error handler.
+ */
 app.use((err, req, res, next) => {
-  if (err instanceof UserNotFoundError) {
-    return res.status(404)
-              .json({ error: 'these are not the droids you\'re looking for'})
-  }
-
-  res.status(500)
-     .json({ error: 'i have a bad feeling about this'})
+    res.status(500)
+       .json({ error: 'i have a bad feeling about this'})
 })
 
 ```
 
-
-That's all. Told you it was simple, right?
-
-
-## Using anywhere else
-
-It was intended to be use with [expressjs](http://expressjs.com/) but I'm pretty sure you could use it anywhere you want since you pass your error handler as the last argument.
-
-Let's try it out:
-
-```js
-const rescue = require('express-rescue')
-
-const somethingWrong = rescue(function (arg1, arg2, arg3, arg4, errorHandler) {
-  throw new Error('Houston, we have a problem!')
-})
-
-const arg1 = null
-const arg2 = null
-const arg3 = null
-const arg4 = null
-
-const errorHandler = function (err) {
-  console.log(err.message)
-  process.exit(1)
-}
-
-somethingWrong(arg1, arg2, arg3, arg4, errorHandler) // Houston, we have a problem!
-```
-
-Oh in case you didn't notice: yes, you're not limited to use only async functions. `somethingWrong` is a regular (sync) function.
+That's all.
 
 
 **Hope you enjoy the async/await heaven!**
@@ -82,19 +61,17 @@ Chears!
 ## Tests
 
 ```txt
-yarn test v0.27.5
-$ mocha specs --require ./specs/spec-helper.js
-
+> express-rescue@1.1.26 test /Users/rwillians/Projects/express-rescue
+> mocha specs --require ./specs/spec-helper.js
 
   const callable = rescue(async ([err,] req, res, next) => { })
     calls the last argument (next) with the thrown error
+      ✓ All arguments are been passed to the callback
       ✓ Raises a TypeError if last argument is not a function
       ✓ callable(req, res, next) - works for routes and middlewares
       ✓ callable(err, req, res, next) - works for error handler middlewares
       ✓ callable(foo, bar, baz, foobar, foobaz, errorHandler) - should work for basically anything, since you place an error handler as the last argument
 
 
-  4 passing (17ms)
-
-Done in 0.48s.
+  5 passing (7ms)
 ```
