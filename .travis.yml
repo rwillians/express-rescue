@@ -7,6 +7,7 @@ node_js:
     - 11
     - 12
     - 13
+    - 14
 
 cache:
     npm: true
@@ -34,4 +35,4 @@ deploy:
     api_key: $NPM_TOKEN
     on:
         tags: true
-        node: 13
+        node: 14

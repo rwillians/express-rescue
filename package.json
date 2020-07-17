@@ -3,7 +3,6 @@
   "version": "1.1.27",
   "description": "A wrapper for async functions which makes sure all async errors are passed to your errors handler",
   "license": "MIT",
-  "main": "dist/index.js",
   "keywords": [
     "async",
     "await",
@@ -15,6 +14,10 @@
   "author": "Rafael Willians <me@rwillians.com>",
   "contributors": [
     "Lucas Santos <hello@lsantos.dev>"
+  ],
+  "main": "dist/index.js",
+  "files": [
+    "dist/**/*"
   ],
   "homepage": "https://github.com/rwillians/express-rescue#readme",
   "repository": {
@@ -28,11 +31,11 @@
     "node": ">=7.6.0"
   },
   "scripts": {
-    "coverage": "nyc --reporter=text --include index.js npm test",
+    "build": "tsc",
+    "coverage": "nyc --reporter=text npm test",
     "coverage:report": "nyc report --reporter=text-lcov",
-    "lint": "standard index.js && standard specs/**.spec.js --global describe --global context --global it --global specify --global before --global after --global beforeEach --global afterEach --global expect",
-    "test": "mocha specs --require ./specs/spec-helper.js",
-    "build": "tsc"
+    "lint": "standard --global describe --global it",
+    "test": "mocha test/*.test.js --check-leaks --full-trace --use_strict --recursive"
   },
   "devDependencies": {
     "@types/express": "^4.16.1",

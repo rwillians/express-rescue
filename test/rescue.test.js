@@ -1,7 +1,8 @@
 'use strict'
 
-const sinon = require('sinon')
+const { expect } = require('chai').use(require('chai-as-promised'))
 const rescue = require('../dist/index')
+const sinon = require('sinon')
 
 describe('const callable = rescue(async ([err,] req, res, next) => { })', () => {
   describe('calls the last argument (next) with the thrown error', () => {
