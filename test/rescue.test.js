@@ -1,5 +1,6 @@
 'use strict'
 
+const NonFunctionNextError = require('../dist/errors/NonFunctionNextError')
 const { expect } = require('chai').use(require('chai-as-promised'))
 const rescue = require('../dist/index')
 const sinon = require('sinon')
@@ -24,9 +25,9 @@ describe('const callable = rescue(async ([err,] req, res, next) => { })', () => 
       expect(spy3.called).to.equals(true)
     })
 
-    it('Raises a TypeError if last argument is not a function', () => {
+    it('Raises a NonFunctionNextError if last argument is not a function', () => {
       expect(route({}, {}, {}, {}, {}, {}))
-        .to.eventually.be.rejectedWith(TypeError, 'next is not a function')
+        .to.eventually.be.rejectedWith(NonFunctionNextError)
     })
 
     it('callable(req, res, next) - works for routes and middlewares', () => {

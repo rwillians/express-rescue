@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
+import NonFunctionNextError from './errors/NonFunctionNextError'
 
 export { Request, Response, NextFunction }
 export declare type Callback = (...args: any[]) => Promise<void> | void
@@ -11,6 +12,10 @@ export declare interface Rescue {
 const rescue: Rescue = function rescue (callback) {
   return async function rescuehandler (...args: any[]): Promise<void> {
     const next = args.slice(-1).pop() as NextFunction
+
+    if (typeof next !== 'function') {
+      throw new NonFunctionNextError()
+    }
 
     try {
       await callback(...args) // eslint-disable-line
