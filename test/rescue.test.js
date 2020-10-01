@@ -1,6 +1,5 @@
 'use strict'
 
-const NonFunctionNextError = require('../dist/errors/NonFunctionNextError')
 const { expect } = require('chai').use(require('chai-as-promised'))
 const rescue = require('../dist/index')
 const sinon = require('sinon')
@@ -27,7 +26,7 @@ describe('const callable = rescue(async ([err,] req, res, next) => { })', () => 
 
     it('Raises a NonFunctionNextError if last argument is not a function', () => {
       expect(route({}, {}, {}, {}, {}, {}))
-        .to.eventually.be.rejectedWith(NonFunctionNextError)
+        .to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
     })
 
     it('callable(req, res, next) - works for routes and middlewares', () => {

@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express'
-import NonFunctionNextError from './errors/NonFunctionNextError'
 
 export { Request, Response, NextFunction }
 export declare type Callback = (...args: any[]) => Promise<void> | void
@@ -14,7 +13,7 @@ const rescue: Rescue = function rescue (callback) {
     const next = args.slice(-1).pop() as NextFunction
 
     if (typeof next !== 'function') {
-      throw new NonFunctionNextError()
+      throw new TypeError('The last parameter received by express-rescue is not a function. Are you sure you passed its return as a middleware?')
     }
 
     try {
