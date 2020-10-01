@@ -2,6 +2,7 @@
 
 const sinon = require('sinon')
 const rescue = require('../dist/index')
+const NonFunctionNextError = require('../dist/errors/NonFunctionNextError')
 
 describe('const callable = rescue(async ([err,] req, res, next) => { })', () => {
   describe('calls the last argument (next) with the thrown error', () => {
@@ -24,8 +25,10 @@ describe('const callable = rescue(async ([err,] req, res, next) => { })', () => 
     })
 
     it('Raises a TypeError if last argument is not a function', () => {
-      expect(route({}, {}, {}, {}, {}, {}))
-        .to.eventually.be.rejectedWith(TypeError, 'handler is not a function')
+      expect(route({}, {}, {}, {}, {}, {})).to.eventually.be.rejectedWith(
+        NonFunctionNextError,
+        'The last parameter received by express-rescue is not a function'
+      )
     })
 
     it('callable(req, res, next) - works for routes and middlewares', () => {
