@@ -24,7 +24,7 @@ describe('const callable = rescue(async ([err,] req, res, next) => { })', () => 
       expect(spy3.called).to.equals(true)
     })
 
-    it('Raises a NonFunctionNextError if last argument is not a function', () => {
+    it('Raises a TypeError if last argument is not a function', () => {
       expect(route({}, {}, {}, {}, {}, {}))
         .to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
     })
