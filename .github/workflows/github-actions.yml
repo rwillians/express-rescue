@@ -22,5 +22,19 @@ jobs:
         run: npm run test 
       - name: Run coverage
         run: npm run coverage
-      - name: Run coverage report
-        run: npm install -g coveralls && npm run coverage:report | coveralls
+      - name: Coveralls Parallel
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          flag-name: run-${{ matrix.test_number }}
+          parallel: true
+
+  coveralls:
+    needs: scripts
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
