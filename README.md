@@ -1,6 +1,6 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Coverage Status](https://coveralls.io/repos/github/rwillians/express-rescue/badge.svg?branch=main)](https://coveralls.io/github/rwillians/express-rescue?branch=main)
-[![Build Status](https://travis-ci.org/rwillians/express-rescue.svg?branch=master)](https://travis-ci.org/rwillians/express-rescue)
+[![CI](https://github.com/rwillians/express-rescue/actions/workflows/ci_pr.yml/badge.svg)](https://github.com/rwillians/express-rescue/actions/workflows/ci_pr.yml)
 ![node-current](https://img.shields.io/node/v/express-rescue)
 
 [![NPM](https://nodei.co/npm/express-rescue.png)](https://npmjs.org/package/express-rescue)
