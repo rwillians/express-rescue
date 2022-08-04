@@ -24,7 +24,7 @@ jobs:
       - name: Setting up node
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install and build
         run: |
