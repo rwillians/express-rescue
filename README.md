@@ -4,8 +4,6 @@
 ![node-current](https://img.shields.io/node/v/express-rescue)
 ![Downloads](https://img.shields.io/npm/dy/express-rescue)
 
-[![NPM](https://nodei.co/npm/express-rescue.png)](https://npmjs.org/package/express-rescue)
-
 # Express Rescue
 
 This is a dependency-free wrapper (or sugar code layer if you will) for async middlewares which makes sure all async errors are passed to your stack of error handlers, allowing you to have a **cleaner and more readable code**.
