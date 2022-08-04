@@ -1,0 +1,42 @@
+name: Coverage Report
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**/*.ts'
+      - 'test/**/*.js'
+      - 'tsconfig.json'
+
+env:
+  NODE_VERSION: 18
+
+jobs:
+  coverage:
+    name: Report coverage to Coveralls
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Setting up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install and build
+        run: |
+          npm install
+          npm run build
+
+      - name: Run coverage
+        run: |
+          npm run coverage
+          npm run coverage:report
+
+      - name: Run coveralls
+        uses: coverallsapp/github-action@v1.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
