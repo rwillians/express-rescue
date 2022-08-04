@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 export { Request, Response, NextFunction }
 export declare type Callback = (...args: any[]) => Promise<void> | void
 export declare type ErrorConstructor = { new(...args: any[]): Error }
+
 export declare interface Rescue {
   (callback: Callback): Callback
   from (constructor: ErrorConstructor, callback: Callback): Callback
