@@ -2,6 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/rwillians/express-rescue/badge.svg?branch=main)](https://coveralls.io/github/rwillians/express-rescue?branch=main)
 [![CI](https://github.com/rwillians/express-rescue/actions/workflows/ci_pr.yml/badge.svg)](https://github.com/rwillians/express-rescue/actions/workflows/ci_pr.yml)
 ![node-current](https://img.shields.io/node/v/express-rescue)
+![Downloads](https://img.shields.io/npm/dy/express-rescue)
 
 [![NPM](https://nodei.co/npm/express-rescue.png)](https://npmjs.org/package/express-rescue)
 
