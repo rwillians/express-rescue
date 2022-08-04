@@ -34,7 +34,7 @@
   "scripts": {
     "build": "tsc",
     "coverage": "nyc --reporter=text npm test",
-    "coverage:report": "nyc report --reporter=text-lcov",
+    "coverage:report": "nyc report --reporter=lcov",
     "lint": "standard --global describe --global it",
     "test": "mocha test/*.test.js --check-leaks --full-trace --use_strict --recursive"
   },
