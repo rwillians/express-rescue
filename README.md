@@ -9,7 +9,9 @@
 
 This is a dependency-free wrapper (or sugar code layer if you will) for async middlewares which makes sure all async errors are passed to your stack of error handlers, allowing you to have a **cleaner and more readable code**.
 
-!! Please note that even though this library is supposed to work on `node >= 7.6`, we are only able to test for node versions 10 and above.
+> **Note**
+> Even though this library is supposed to work on `node >= 7.6`, we are unable to test against node versions `7`, `8` and `9` because our tooling requires at least node version `10`. We'll keep the minimum requirement for this library at version `node >= 7.6` so that we allow old projects to keep getting updates, but be aware that we are unable to test againt the mentioned versions.
+
 
 ## How to use it
 
