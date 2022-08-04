@@ -28,6 +28,7 @@ rescue.from = function rescuefrom (constructor, callback) {
   return function errorhandler (err: Error, req: Request, res: Response, next: NextFunction) {
     if (!(err instanceof constructor)) {
       next(err)
+      return
     }
 
     callback(err, req, res, next)
