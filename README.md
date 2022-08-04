@@ -65,17 +65,20 @@ Chears!
 ## Tests
 
 ```txt
-> express-rescue@1.1.26 test /Users/rwillians/Projects/express-rescue
-> mocha specs --require ./specs/spec-helper.js
+> mocha test/*.test.js --check-leaks --full-trace --use_strict --recursive
 
   const callable = rescue(async ([err,] req, res, next) => { })
     calls the last argument (next) with the thrown error
-      ✓ All arguments are been passed to the callback
-      ✓ Raises a TypeError if last argument is not a function
-      ✓ callable(req, res, next) - works for routes and middlewares
-      ✓ callable(err, req, res, next) - works for error handler middlewares
-      ✓ callable(foo, bar, baz, foobar, foobaz, errorHandler) - should work for basically anything, since you place an error handler as the last argument
+      ✔ All arguments are been passed to the callback
+      ✔ Raises a TypeError if last argument is not a function
+      ✔ callable(req, res, next) - works for routes and middlewares
+      ✔ callable(err, req, res, next) - works for error handler middlewares
+      ✔ callable(foo, bar, baz, foobar, foobaz, errorHandler) - should work for basically anything, since you place an error handler as the last argument
+
+  rescue.from(MyError, (err) => { })
+    ✔ handles the error when error is instance of given constructor
+    ✔ it call `next` function if error is not an instance of given constructor
 
 
-  5 passing (7ms)
+  7 passing (7ms)
 ```
