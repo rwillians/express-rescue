@@ -1,10 +1,22 @@
-name: Express Rescue gitHub actions
+name: CI PR
 
-on: pull_request
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    paths:
+      - 'package.json'
+      - 'package-lock.lock'
+      - 'src/**/*.ts'
+      - 'test/**/*.js'
+      - 'tsconfig.json'
 
 jobs:
-  scripts:
+  test:
+    name: Testing with Node ${{ matrix.node }}
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node:
@@ -19,6 +31,7 @@ jobs:
         - 15
         - 16
         - 17
+        - 18
 
     steps:
       - name: Check out repository code
@@ -39,29 +52,10 @@ jobs:
         run: npm run lint
 
       - name: Run test
-        run: npm run test 
-
-  coverage:
-    needs: scripts
-      runs-on: ubuntu-latest
-      steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-
-      - name: Use Node.js 17.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 17.x
-          check-latest: true
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build the code
-        run: npm run build
+        run: npm run test
 
       - name: Run coverage
-        run: npm run coverage
+        run: npm run coverage:report
 
       - name: Run coveralls
         uses: coverallsapp/github-action@v1.1.0
