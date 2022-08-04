@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  publish:
+    name: Publish package
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Tag matches package's and package-lock's version
+        run: |
+          node -e "const tag = process.env.GITHUB_REF.replace('refs/tags/v', ''); process.exit(require('./package.json').version === tag && require('./package-lock.json').version === tag ? 0 : 1);"
+
+      - name: Prepare package for publishing
+        run: |
+          npm install
+          npm run build
+
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
