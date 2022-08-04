@@ -52,7 +52,9 @@ jobs:
         run: npm run test
 
       - name: Run coverage
-        run: npm run coverage:report
+        run: |
+          npm run coverage
+          npm run coverage:report
 
       - name: Run coveralls
         uses: coverallsapp/github-action@v1.1.0
