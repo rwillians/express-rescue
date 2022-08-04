@@ -20,9 +20,6 @@ jobs:
     strategy:
       matrix:
         node:
-        - 7
-        - 8
-        - 9
         - 10
         - 11
         - 12
@@ -60,4 +57,18 @@ jobs:
       - name: Run coveralls
         uses: coverallsapp/github-action@v1.1.0
         with:
+          parallel: true
+          flag-name: node-version ${{ matrix.node }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  report-coverage:
+    name: Report coverage to Coveralls
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true
