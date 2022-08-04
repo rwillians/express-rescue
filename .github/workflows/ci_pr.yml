@@ -1,0 +1,76 @@
+name: CI PR
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    paths:
+      - 'package.json'
+      - 'package-lock.lock'
+      - 'src/**/*.ts'
+      - 'test/**/*.js'
+      - 'tsconfig.json'
+
+jobs:
+  test:
+    name: Testing with Node ${{ matrix.node }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node:
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        - 16
+        - 17
+        - 18
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Setting up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the code
+        run: npm run build
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run test
+        run: npm run test
+
+      - name: Run coverage
+        run: |
+          npm run coverage
+          npm run coverage:report
+
+      - name: Run coveralls
+        uses: coverallsapp/github-action@v1.1.0
+        with:
+          parallel: true
+          flag-name: node-version ${{ matrix.node }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  report-coverage:
+    name: Report coverage to Coveralls
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        parallel-finished: true
