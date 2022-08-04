@@ -51,3 +51,36 @@ describe('const callable = rescue(async ([err,] req, res, next) => { })', () => 
     })
   })
 })
+
+describe('rescue.from(MyError, (err) => { })', () => {
+  class MyError extends Error {}
+  class SomethingElse {}
+
+  const req = {}
+  const res = {}
+
+  it('handles the error when error is instance of given constructor', () => {
+    const matchedHandler = (err) => {
+      expect(err).to.be.instanceOf(MyError)
+    }
+
+    const next = (_err) => {
+      throw new Error('Not supposed to call this function .-.')
+    }
+
+    rescue.from(MyError, matchedHandler)(new MyError(), req, res, next)
+    rescue.from(Error, matchedHandler)(new MyError(), req, res, next)
+  })
+
+  it('it call `next` function if error is not an instance of given constructor', () => {
+    const matchedHandler = (_err) => {
+      throw new Error('Not supposed to call this function .-.')
+    }
+
+    const next = (err) => {
+      expect(err).to.be.instanceOf(SomethingElse)
+    }
+
+    rescue.from(MyError, matchedHandler)(new SomethingElse(), req, res, next)
+  })
+})
