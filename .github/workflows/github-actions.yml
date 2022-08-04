@@ -5,14 +5,29 @@ on: pull_request
 jobs:
   scripts:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node:
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        - 16
+        - 17
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
 
       - name: Setting up node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: ${{ matrix.node }}
 
       - name: Install dependencies
         run: npm install
@@ -26,6 +41,25 @@ jobs:
       - name: Run test
         run: npm run test 
 
+  coverage:
+    needs: scripts
+      runs-on: ubuntu-latest
+      steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 17.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 17.x
+          check-latest: true
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the code
+        run: npm run build
+
       - name: Run coverage
         run: npm run coverage
 
@@ -33,4 +67,3 @@ jobs:
         uses: coverallsapp/github-action@v1.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
