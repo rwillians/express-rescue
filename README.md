@@ -34,7 +34,7 @@ app.get('/:id', rescue(async (req, res, next) => {
 }))
 
 /**
- * `rescue.all` insures thrown errors from every middleware in the array will be passed to `next` callback.
+ * `rescue.all` insures thrown errors coming from any middleware inside the array will be passed to `next` callback.
  */
 app.post('/login', rescue.all([
   validateLogin,
