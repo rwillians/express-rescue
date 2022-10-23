@@ -7,6 +7,7 @@ export declare type ErrorConstructor = { new(...args: any[]): Error }
 export declare interface Rescue {
   (callback: Callback): Callback
   from (constructor: ErrorConstructor, callback: Callback): Callback
+  all (callbacks: Callback[]): Callback[]
 }
 
 const rescue: Rescue = function rescue (callback) {
@@ -34,6 +35,24 @@ rescue.from = function rescuefrom (constructor, callback) {
 
     callback(err, req, res, next)
   }
+}
+
+rescue.all = function rescue (callbacks) {
+  return callbacks.map((callback) => {
+    return async function rescuehandler (...args: any[]): Promise<void> {
+      const next = args.slice(-1).pop() as NextFunction
+  
+      if (typeof next !== 'function') {
+        throw new TypeError('The last parameter received by express-rescue is not a function. Are you sure you passed its return as a middleware?')
+      }
+  
+      try {
+        await callback(...args) // eslint-disable-line
+      } catch (err) {
+        next(err)
+      }
+    }
+  })
 }
 
 export default rescue
