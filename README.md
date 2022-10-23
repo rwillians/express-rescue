@@ -34,6 +34,14 @@ app.get('/:id', rescue(async (req, res, next) => {
 }))
 
 /**
+ * `rescue.all` insures thrown errors from every middleware in the array will be passed to `next` callback.
+ */
+app.post('/login', rescue.all([
+  validateLogin,
+  loginController.login,
+]));
+
+/**
  * `rescue.from` allows you to handle a specific error which is helpful for
  * handling domain errors.
  */
