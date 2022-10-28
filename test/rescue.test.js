@@ -42,7 +42,7 @@ describe('const callable = rescue(async ([err,] req, res, next) => { })', () => 
       })
     })
 
-    it('callable(foo, bar, baz, foobar, foobaz, errorHandler) - should work for basically anything, since you place an error handler as the last argument', () => {
+    it('callable(foo, bar, baz, foobar, foobaz, errorHandler) - should work for basically anything, as long as your function takes an error handler as the last parameter', () => {
       const spy = sinon.spy()
       route({}, {}, {}, {}, {}, {}, {}, spy).then(() => {
         expect(spy.called).to.equals(true)
