@@ -37,22 +37,8 @@ rescue.from = function rescuefrom (constructor, callback) {
   }
 }
 
-rescue.all = function rescue (callbacks) {
-  return callbacks.map((callback) => {
-    return async function rescuehandler (...args: any[]): Promise<void> {
-      const next = args.slice(-1).pop() as NextFunction
-  
-      if (typeof next !== 'function') {
-        throw new TypeError('The last parameter received by express-rescue is not a function. Are you sure you passed its return as a middleware?')
-      }
-  
-      try {
-        await callback(...args) // eslint-disable-line
-      } catch (err) {
-        next(err)
-      }
-    }
-  })
+rescue.all = function rescueall (callbacks) {
+  return callbacks.map(rescue)
 }
 
 export default rescue
