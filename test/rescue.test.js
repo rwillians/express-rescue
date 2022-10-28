@@ -84,3 +84,24 @@ describe('rescue.from(MyError, (err) => { })', () => {
     rescue.from(MyError, matchedHandler)(new SomethingElse(), req, res, next)
   })
 })
+
+describe('const callables = rescue.all([fn1, fn2, fn3])', () => {
+  const fn1 = async (cb) => cb("ok")
+  const fn2 = async (_cb) => { throw new Error('foo') }
+
+  it('All given functions are wrapped with rescue', async () => {
+    const [rescuedFn1, rescuedFn2] = rescue.all([fn1, fn2])
+
+    // Proves functions still do what they are meant to do
+    expect(fn1((a) => a)).to.eventually.be.equal("ok")
+    expect(rescuedFn1((a) => a)).to.eventually.be.equal("ok")
+    expect(fn2((a) => a)).to.eventually.be.rejectedWith(Error, 'foo')
+    expect(rescuedFn2((a) => a)).to.eventually.be.rejectedWith(Error, 'foo')
+
+    // Proves both rescued functions contains additional behavior introduced by `rescue`
+    expect(fn1()).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
+    expect(rescuedFn1()).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
+    expect(fn2()).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
+    expect(rescuedFn2()).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
+  })
+})
