@@ -34,14 +34,6 @@ app.get('/:id', rescue(async (req, res, next) => {
 }))
 
 /**
- * `rescue.all` insures thrown errors coming from any middleware inside the array will be passed to `next` callback.
- */
-app.post('/login', rescue.all([
-  validateLogin,
-  loginController.login,
-]));
-
-/**
  * `rescue.from` allows you to handle a specific error which is helpful for
  * handling domain errors.
  */
@@ -61,6 +53,24 @@ app.use((err, req, res, next) => {
 
 ```
 
+There's a helper function `rescue.all([...])` in case you want to wrap several functions with `rescue`. With `rescue.all`, doing `[rescue(fn1), rescue(fn2)]` can be shortened to `rescue.all([fn1, fn2])`.
+
+```js
+const rescue = require('express-rescue')
+
+// Doing it like this
+app.post('/products', rescue.all([
+    validationFn,
+    createProductFn
+]))
+
+// Is equivalent to this
+app.post('/products', [
+    rescue(validationFn),
+    rescue(createProductFn)
+])
+```
+
 That's all.
 
 
@@ -72,6 +82,7 @@ Chears!
 ## Tests
 
 ```txt
+> express-rescue@1.2.0 test
 > mocha test/*.test.js --check-leaks --full-trace --use_strict --recursive
 
   const callable = rescue(async ([err,] req, res, next) => { })
@@ -80,12 +91,16 @@ Chears!
       ✔ Raises a TypeError if last argument is not a function
       ✔ callable(req, res, next) - works for routes and middlewares
       ✔ callable(err, req, res, next) - works for error handler middlewares
-      ✔ callable(foo, bar, baz, foobar, foobaz, errorHandler) - should work for basically anything, since you place an error handler as the last argument
+      ✔ callable(foo, bar, baz, foobar, foobaz, errorHandler) - should work for
+        basically anything, as long as your function takes an error handler as
+        the last parameter
 
   rescue.from(MyError, (err) => { })
     ✔ handles the error when error is instance of given constructor
     ✔ it call `next` function if error is not an instance of given constructor
 
+  const callables = rescue.all([fn1, fn2, fn3])
+    ✔ All given functions are wrapped with rescue
 
-  7 passing (7ms)
+  8 passing (8ms)
 ```
