@@ -25,26 +25,26 @@ describe('const callable = rescue(async ([err,] req, res, next) => { })', () => 
     })
 
     it('Raises a TypeError if last argument is not a function', () => {
-      expect(route({}, {}, {}, {}, {}, {})).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
+      return Promise.all([
+        expect(route({})).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function'),
+        expect(route({}, {})).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function'),
+        expect(route({}, {}, {})).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function'),
+        expect(route({}, {}, {}, {})).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
+      ])
     })
 
     it('callable(req, res, next) - works for routes and middlewares', () => {
       const spy = sinon.spy()
-      route({}, {}, spy).then(() => {
+
+      return route({}, {}, spy).then(() => {
         expect(spy.called).to.equals(true)
       })
     })
 
     it('callable(err, req, res, next) - works for error handler middlewares', () => {
       const spy = sinon.spy()
-      route({}, {}, {}, spy).then(() => {
-        expect(spy.called).to.equals(true)
-      })
-    })
 
-    it('callable(foo, bar, baz, foobar, foobaz, errorHandler) - should work for basically anything, as long as your function takes an error handler as the last parameter', () => {
-      const spy = sinon.spy()
-      route({}, {}, {}, {}, {}, {}, {}, spy).then(() => {
+      return route({}, {}, {}, spy).then(() => {
         expect(spy.called).to.equals(true)
       })
     })
@@ -85,22 +85,15 @@ describe('rescue.from(MyError, (err) => { })', () => {
 })
 
 describe('const callables = rescue.all([fn1, fn2, fn3])', () => {
-  const fn1 = async (cb) => cb("ok")
-  const fn2 = async (_cb) => { throw new Error('foo') }
+  const fn = async (_cb) => { throw new Error('foo') }
 
-  it('All given functions are wrapped with rescue', async () => {
-    const [rescuedFn1, rescuedFn2] = rescue.all([fn1, fn2])
+  it('All given functions are wrapped with rescue', () => {
+    const [rescuedFn] = rescue.all([fn])
 
-    // Proves functions still do what they are meant to do
-    expect(fn1((a) => a)).to.eventually.be.equal("ok")
-    expect(rescuedFn1((a) => a)).to.eventually.be.equal("ok")
-    expect(fn2((a) => a)).to.eventually.be.rejectedWith(Error, 'foo')
-    expect(rescuedFn2((a) => a)).to.eventually.be.rejectedWith(Error, 'foo')
-
-    // Proves both rescued functions contains additional behavior introduced by `rescue`
-    expect(fn1()).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
-    expect(rescuedFn1()).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
-    expect(fn2()).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
-    expect(rescuedFn2()).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
+    return Promise.all([
+      // Proves that the rescued function contains additional behavir that is
+      // added when a fn is wrapped with `rescue`.
+      expect(rescuedFn()).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function'),
+    ])
   })
 })
