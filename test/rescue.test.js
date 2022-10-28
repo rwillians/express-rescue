@@ -25,27 +25,26 @@ describe('const callable = rescue(async ([err,] req, res, next) => { })', () => 
     })
 
     it('Raises a TypeError if last argument is not a function', () => {
-      expect(route({}, {}, {}, {}, {}, {}))
-        .to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
+      return Promise.all([
+        expect(route({})).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function'),
+        expect(route({}, {})).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function'),
+        expect(route({}, {}, {})).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function'),
+        expect(route({}, {}, {}, {})).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
+      ])
     })
 
     it('callable(req, res, next) - works for routes and middlewares', () => {
       const spy = sinon.spy()
-      route({}, {}, spy).then(() => {
+
+      return route({}, {}, spy).then(() => {
         expect(spy.called).to.equals(true)
       })
     })
 
     it('callable(err, req, res, next) - works for error handler middlewares', () => {
       const spy = sinon.spy()
-      route({}, {}, {}, spy).then(() => {
-        expect(spy.called).to.equals(true)
-      })
-    })
 
-    it('callable(foo, bar, baz, foobar, foobaz, errorHandler) - should work for basically anything, since you place an error handler as the last argument', () => {
-      const spy = sinon.spy()
-      route({}, {}, {}, {}, {}, {}, {}, spy).then(() => {
+      return route({}, {}, {}, spy).then(() => {
         expect(spy.called).to.equals(true)
       })
     })
@@ -53,8 +52,8 @@ describe('const callable = rescue(async ([err,] req, res, next) => { })', () => 
 })
 
 describe('rescue.from(MyError, (err) => { })', () => {
-  class MyError extends Error {}
-  class SomethingElse {}
+  class MyError extends Error { }
+  class SomethingElse { }
 
   const req = {}
   const res = {}
@@ -82,5 +81,19 @@ describe('rescue.from(MyError, (err) => { })', () => {
     }
 
     rescue.from(MyError, matchedHandler)(new SomethingElse(), req, res, next)
+  })
+})
+
+describe('const callables = rescue.all([fn1, fn2, fn3])', () => {
+  const fn = async (_cb) => { throw new Error('foo') }
+
+  it('All given functions are wrapped with rescue', () => {
+    const [rescuedFn] = rescue.all([fn])
+
+    return Promise.all([
+      // Proves that the rescued function contains additional behavir that is
+      // added when a fn is wrapped with `rescue`.
+      expect(rescuedFn()).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
+    ])
   })
 })

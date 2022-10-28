@@ -7,6 +7,7 @@ export declare type ErrorConstructor = { new(...args: any[]): Error }
 export declare interface Rescue {
   (callback: Callback): Callback
   from (constructor: ErrorConstructor, callback: Callback): Callback
+  all (callbacks: Callback[]): Callback[]
 }
 
 const rescue: Rescue = function rescue (callback) {
@@ -34,6 +35,10 @@ rescue.from = function rescuefrom (constructor, callback) {
 
     callback(err, req, res, next)
   }
+}
+
+rescue.all = function rescueall (callbacks) {
+  return callbacks.map(rescue)
 }
 
 export default rescue
