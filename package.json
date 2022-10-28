@@ -36,6 +36,7 @@
     "coverage": "nyc --reporter=text npm test",
     "coverage:report": "nyc report --reporter=lcov",
     "lint": "standard --global describe --global it",
+    "lint:fix": "standard --global describe --global it --fix",
     "test": "mocha test/*.test.js --check-leaks --full-trace --use_strict --recursive"
   },
   "devDependencies": {

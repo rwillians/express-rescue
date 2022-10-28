@@ -93,7 +93,7 @@ describe('const callables = rescue.all([fn1, fn2, fn3])', () => {
     return Promise.all([
       // Proves that the rescued function contains additional behavir that is
       // added when a fn is wrapped with `rescue`.
-      expect(rescuedFn()).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function'),
+      expect(rescuedFn()).to.eventually.be.rejectedWith(TypeError, 'The last parameter received by express-rescue is not a function')
     ])
   })
 })
